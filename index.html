@@ -14,6 +14,7 @@
     --cream: #f0e6d3;
     --muted: #7a6a56;
     --red: #c0392b;
+    --green: #2ecc71;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--cream); font-family: 'DM Mono', monospace; min-height: 100vh; padding-bottom: 80px; }
@@ -26,54 +27,77 @@
   .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
   .section { display: none; padding: 16px; }
   .section.active { display: block; }
-  .bar-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 12px; transition: border-color 0.2s; }
-  .bar-card.visited { border-color: var(--gold); opacity: 0.85; }
+
+  /* Bar cards */
+  .bar-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+  .bar-card.visited { border-color: var(--gold); }
   .bar-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
   .bar-num { background: var(--gold); color: var(--bg); font-weight: 500; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; flex-shrink: 0; margin-top: 2px; }
   .bar-num.done { background: var(--muted); }
   .bar-info { flex: 1; }
   .bar-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--cream); font-style: italic; }
   .bar-addr { font-size: 0.65rem; color: var(--muted); margin-top: 2px; }
-  .score-section { margin-top: 10px; }
-  .score-label { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
-  .player-scores { display: flex; flex-direction: column; gap: 8px; }
-  .player-row { display: flex; align-items: center; gap: 10px; }
-  .player-name { font-size: 0.7rem; color: var(--cream); width: 70px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .stars { display: flex; gap: 3px; }
-  .star { width: 24px; height: 24px; border-radius: 4px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 10px; color: var(--muted); transition: all 0.15s; background: transparent; }
-  .star.filled { background: var(--gold); border-color: var(--gold); color: var(--bg); }
-  .score-num { font-size: 0.85rem; color: var(--gold); min-width: 20px; text-align: right; }
   .visit-btn { width: 100%; margin-top: 12px; padding: 10px; border-radius: 8px; border: 1px solid var(--gold); background: transparent; color: var(--gold); font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
   .visit-btn:active { background: var(--gold); color: var(--bg); }
   .visit-btn.visited-btn { border-color: var(--muted); color: var(--muted); }
+
+  /* Bar challenges log */
+  .bar-challenges { margin-top: 12px; }
+  .bar-challenges-title { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .challenge-log-row { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 8px; background: var(--bg); margin-bottom: 6px; }
+  .challenge-log-player { font-size: 0.7rem; width: 64px; flex-shrink: 0; }
+  .challenge-log-text { font-size: 0.65rem; color: var(--muted); flex: 1; line-height: 1.4; }
+  .challenge-log-pts { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--gold); min-width: 28px; text-align: right; }
+  .challenge-log-pts.zero { color: var(--muted); }
+  .bar-total-row { display: flex; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+  .bar-total-chip { flex: 1; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 8px; text-align: center; }
+  .bar-total-chip-name { font-size: 0.6rem; color: var(--muted); margin-bottom: 2px; }
+  .bar-total-chip-pts { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--gold); }
+
+  /* Bar personal rating */
+  .bar-rating-section { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .bar-rating-title { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .player-rating-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+  .player-rating-name { font-size: 0.7rem; color: var(--cream); width: 64px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rating-stars { display: flex; gap: 2px; }
+  .rating-star { width: 22px; height: 22px; border-radius: 4px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 9px; color: var(--muted); transition: all 0.12s; background: transparent; }
+  .rating-star.filled { background: var(--gold); border-color: var(--gold); color: var(--bg); }
+  .rating-num { font-size: 0.85rem; color: var(--gold); min-width: 18px; text-align: right; }
+
+  /* Scoreboard */
   .scoreboard { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 16px; }
   .sb-header { background: var(--gold); color: var(--bg); padding: 12px 16px; font-family: 'Playfair Display', serif; font-size: 1rem; font-style: italic; }
   .sb-row { display: flex; align-items: center; padding: 14px 16px; border-bottom: 1px solid var(--border); gap: 12px; }
   .sb-row:last-child { border-bottom: none; }
-  .sb-rank { font-size: 0.7rem; color: var(--muted); width: 20px; }
+  .sb-rank { font-size: 0.7rem; color: var(--muted); width: 24px; }
   .sb-player-name { flex: 1; font-size: 0.85rem; }
   .sb-total { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--gold); }
-  .sb-bars { font-size: 0.6rem; color: var(--muted); text-align: right; min-width: 60px; }
+  .sb-sub { font-size: 0.6rem; color: var(--muted); text-align: right; min-width: 60px; }
   .progress-bar-wrap { background: var(--border); border-radius: 4px; height: 4px; margin-bottom: 4px; overflow: hidden; }
   .progress-bar-fill { height: 100%; background: var(--gold); border-radius: 4px; transition: width 0.4s ease; }
   .progress-text { font-size: 0.6rem; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 16px; text-align: center; }
+  .winner-banner { background: linear-gradient(135deg, #c9973a, #8b5e1e); border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 16px; }
+  .winner-banner h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--bg); font-style: italic; }
+  .winner-banner p { color: rgba(0,0,0,0.6); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; }
+
+  /* Map */
   .map-btn { display: flex; width: 100%; padding: 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--card); color: var(--cream); font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; text-decoration: none; margin-bottom: 10px; align-items: center; gap: 10px; }
   .map-btn:active { background: var(--border); }
   .map-icon { font-size: 1.2rem; }
   .map-info { text-align: left; }
   .map-title { color: var(--cream); }
   .map-sub { color: var(--muted); font-size: 0.6rem; margin-top: 2px; }
+
+  /* Settings */
   .settings-section { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
   .settings-title { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
   .player-input-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-  .player-emoji { font-size: 1.2rem; }
   input[type="text"] { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; color: var(--cream); font-family: 'DM Mono', monospace; font-size: 0.8rem; outline: none; transition: border-color 0.2s; }
   input[type="text"]:focus { border-color: var(--gold); }
   .save-btn { width: 100%; padding: 12px; border-radius: 8px; border: none; background: var(--gold); color: var(--bg); font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; font-weight: 500; }
   .reset-btn { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--red); background: transparent; color: var(--red); font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; margin-top: 8px; }
-  .winner-banner { background: linear-gradient(135deg, #c9973a, #8b5e1e); border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 16px; }
-  .winner-banner h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--bg); font-style: italic; }
-  .winner-banner p { color: rgba(0,0,0,0.6); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; }
+
+  /* Wheel */
   .wheel-wrap { display: flex; flex-direction: column; align-items: center; padding: 8px 0 24px; }
   .wheel-container { position: relative; width: 300px; height: 300px; margin: 20px auto; }
   .wheel-pointer { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-size: 2rem; z-index: 10; }
@@ -82,11 +106,18 @@
   .spin-btn:active { transform: scale(0.96); }
   .spin-btn:disabled { opacity: 0.5; cursor: not-allowed; }
   .wheel-note { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.08em; margin-top: 12px; text-align: center; }
-  .modal-overlay { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.85); backdrop-filter: blur(6px); align-items: center; justify-content: center; padding: 24px; }
+
+  /* Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.88); backdrop-filter: blur(6px); align-items: center; justify-content: center; padding: 24px; }
   .modal-overlay.open { display: flex; }
-  .modal-box { background: var(--card); border: 1px solid var(--gold); border-radius: 20px; padding: 32px 24px; text-align: center; max-width: 340px; width: 100%; animation: popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275); }
+  .modal-box { background: var(--card); border: 1px solid var(--gold); border-radius: 20px; padding: 28px 20px; text-align: center; max-width: 340px; width: 100%; animation: popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275); }
   @keyframes popIn { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-  .modal-close-btn { width: 100%; padding: 14px; border-radius: 10px; border: none; background: var(--gold); color: var(--bg); font-family: 'DM Mono', monospace; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; font-weight: 500; }
+  .modal-pts-badge { display: inline-block; background: var(--gold); color: var(--bg); border-radius: 20px; padding: 4px 14px; font-size: 0.75rem; letter-spacing: 0.1em; margin-bottom: 16px; font-weight: 500; }
+  .difficulty-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 4px; }
+  .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+  .modal-btn { flex: 1; padding: 14px; border-radius: 10px; font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; font-weight: 500; border: none; }
+  .modal-btn.yes { background: var(--green); color: #0a1f0f; }
+  .modal-btn.no { background: var(--bg); border: 1px solid var(--border); color: var(--muted); }
 </style>
 </head>
 <body>
@@ -110,13 +141,18 @@
 <div id="tab-map" class="section"></div>
 <div id="tab-settings" class="section"></div>
 
+<!-- Challenge Modal -->
 <div class="modal-overlay" id="result-modal">
   <div class="modal-box">
-    <div id="modal-emoji" style="font-size:3rem;margin-bottom:8px"></div>
-    <div id="modal-name" style="font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--gold);font-style:italic;margin-bottom:4px"></div>
-    <div style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:20px">skal utføre</div>
-    <div id="modal-challenge" style="font-size:1rem;color:var(--cream);line-height:1.6;margin-bottom:24px;padding:16px;background:var(--bg);border-radius:10px;border:1px solid var(--border)"></div>
-    <button class="modal-close-btn" onclick="closeModal()">OK, vi er klare! 🍺</button>
+    <div id="modal-emoji" style="font-size:2.8rem;margin-bottom:6px"></div>
+    <div id="modal-name" style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold);font-style:italic;margin-bottom:12px"></div>
+    <div id="modal-difficulty" class="difficulty-label"></div>
+    <div id="modal-pts-badge" class="modal-pts-badge"></div>
+    <div id="modal-challenge" style="font-size:0.95rem;color:var(--cream);line-height:1.6;margin-top:14px;padding:14px;background:var(--bg);border-radius:10px;border:1px solid var(--border);text-align:left"></div>
+    <div class="modal-actions">
+      <button class="modal-btn no" onclick="recordResult(false)">❌ Nektet</button>
+      <button class="modal-btn yes" onclick="recordResult(true)">✅ Gjennomført!</button>
+    </div>
   </div>
 </div>
 
@@ -132,46 +168,57 @@ const BARS = [
 const EMOJIS = ['🍺', '🥂', '🍸'];
 const STORAGE_KEY = 'caetty-rove-tomwaits-2026';
 
+// difficulty: 1=Easy (1pt), 2=Medium (2pt), 3=Hard (3pt)
 const CHALLENGES = [
-  { emoji: '🍺', text: 'Ta en slurk for hvert år du har vært venn med de andre to.' },
-  { emoji: '🥂', text: 'Skål med alle i baren innen 2 minutter — ellers drikker du ut glasset.' },
-  { emoji: '🍹', text: 'Bestill en drink du aldri har smakt før.' },
-  { emoji: '🍺', text: 'Drikk med feil hånd resten av baren. Tar du feil hånd, drikker du en slurk.' },
-  { emoji: '🥃', text: 'Ta to slurker og si en skål — på et annet språk enn norsk.' },
-  { emoji: '🍻', text: 'Bytt drink med personen til høyre for deg i én runde.' },
-  { emoji: '🍺', text: 'Ta en slurk hver gang noen sier "skål" resten av kvelden på denne baren.' },
-  { emoji: '🥂', text: 'Drikk sittende på huk til du er ferdig med slurken.' },
-  { emoji: '🎤', text: 'Syng refrenget til en sang — de andre velger sangen.' },
-  { emoji: '💬', text: 'Gå bort til en fremmed og spør om deres beste drikketips.' },
-  { emoji: '🕺', text: 'Dans alene i 15 sekunder, uten musikk.' },
-  { emoji: '📸', text: 'Ta en selfie med en fremmed og vis den frem til gruppen.' },
-  { emoji: '🤝', text: 'Presenter deg til barpersonalet med et falskt, overdrevet yrke.' },
-  { emoji: '🗣️', text: 'Fortell en vits for gruppa. Er den dårlig, drikker du en ekstra slurk.' },
-  { emoji: '🎭', text: 'Etterlign en kjent person i 30 sekunder — de andre gjetter hvem.' },
-  { emoji: '🤫', text: 'Si ingenting i 3 minutter. Bryter du tausheten, drikker du.' },
-  { emoji: '🎲', text: 'Ring en som ikke er med i kveld og overbevis dem om å bli med. Klarer du det? Du slipper neste utfordring.' },
-  { emoji: '👑', text: 'Du er "Kongen/Dronningen" resten av baren — de andre må gjøre det du sier (innen rimelighetens grenser).' },
-  { emoji: '🌶️', text: 'Fortell den mest pinlige tingen du har gjort på en bar — eller drikk dobbelt.' },
-  { emoji: '⏱️', text: 'Hold pusten så lenge du kan. Antall sekunder = antall slurker DE ANDRE drikker.' },
-  { emoji: '🃏', text: 'Sannhet eller utfordring? Velg en av de andre til å stille deg spørsmålet.' },
-  { emoji: '🔁', text: 'Bytt plass med en av de andre og bli sittende slik til neste bar.' },
-  { emoji: '🎯', text: 'Gruppen klipper-saks-stein. Taperen drikker en ekstra slurk.' },
-  { emoji: '🕵️', text: 'Finn noe dere alle tre har til felles med noen i baren — og fortell dem det.' },
+  { emoji: '🍺', text: 'Ta en slurk for hvert år du har vært venn med de andre to.', diff: 1, pts: 1 },
+  { emoji: '🥂', text: 'Skål med alle i baren innen 2 minutter — ellers drikker du ut glasset.', diff: 2, pts: 2 },
+  { emoji: '🍹', text: 'Bestill en drink du aldri har smakt før.', diff: 1, pts: 1 },
+  { emoji: '🍺', text: 'Drikk med feil hånd resten av baren. Tar du feil hånd, drikker du en slurk.', diff: 2, pts: 2 },
+  { emoji: '🥃', text: 'Ta to slurker og si en skål — på et annet språk enn norsk.', diff: 1, pts: 1 },
+  { emoji: '🍻', text: 'Bytt drink med personen til høyre for deg i én runde.', diff: 1, pts: 1 },
+  { emoji: '🍺', text: 'Ta en slurk hver gang noen sier "skål" resten av kvelden på denne baren.', diff: 2, pts: 2 },
+  { emoji: '🥂', text: 'Drikk sittende på huk til du er ferdig med slurken.', diff: 1, pts: 1 },
+  { emoji: '🎤', text: 'Syng refrenget til en sang — de andre velger sangen.', diff: 2, pts: 2 },
+  { emoji: '💬', text: 'Gå bort til en fremmed og spør om deres beste drikketips.', diff: 2, pts: 2 },
+  { emoji: '🕺', text: 'Dans alene i 15 sekunder, uten musikk.', diff: 2, pts: 2 },
+  { emoji: '📸', text: 'Ta en selfie med en fremmed og vis den frem til gruppen.', diff: 2, pts: 2 },
+  { emoji: '🤝', text: 'Presenter deg til barpersonalet med et falskt, overdrevet yrke.', diff: 2, pts: 2 },
+  { emoji: '🗣️', text: 'Fortell en vits for gruppa. Er den dårlig, drikker du en ekstra slurk.', diff: 1, pts: 1 },
+  { emoji: '🎭', text: 'Etterlign en kjent person i 30 sekunder — de andre gjetter hvem.', diff: 2, pts: 2 },
+  { emoji: '🤫', text: 'Si ingenting i 3 minutter. Bryter du tausheten, drikker du.', diff: 3, pts: 3 },
+  { emoji: '🎲', text: 'Ring en som ikke er med i kveld og overbevis dem om å bli med. Klarer du det? Du slipper neste utfordring.', diff: 3, pts: 3 },
+  { emoji: '👑', text: 'Du er "Kongen/Dronningen" resten av baren — de andre må gjøre det du sier (innen rimelighetens grenser).', diff: 3, pts: 3 },
+  { emoji: '🌶️', text: 'Fortell den mest pinlige tingen du har gjort på en bar — eller drikk dobbelt.', diff: 2, pts: 2 },
+  { emoji: '⏱️', text: 'Hold pusten så lenge du kan. Antall sekunder = antall slurker DE ANDRE drikker.', diff: 2, pts: 2 },
+  { emoji: '🃏', text: 'Sannhet eller utfordring? Velg en av de andre til å stille deg spørsmålet.', diff: 2, pts: 2 },
+  { emoji: '🔁', text: 'Bytt plass med en av de andre og bli sittende slik til neste bar.', diff: 1, pts: 1 },
+  { emoji: '🎯', text: 'Gruppen klipper-saks-stein. Taperen drikker en ekstra slurk.', diff: 1, pts: 1 },
+  { emoji: '🕵️', text: 'Finn noe dere alle tre har til felles med noen i baren — og fortell dem det.', diff: 3, pts: 3 },
 ];
+
+const DIFF_LABEL = { 1: '⭐ Lett', 2: '⭐⭐ Middels', 3: '⭐⭐⭐ Vanskelig' };
+const DIFF_COLOR = { 1: '#7a6a56', 2: '#c9973a', 3: '#e05a2b' };
 
 let state = load();
 let wheelSpinning = false;
 let wheelAngle = 0;
+let pendingResult = null; // { playerIdx, challenge, barIdx }
 
 function load() {
   try {
     const s = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-    if (s) return s;
+    if (s) {
+      // Migrate old saves that lack barRatings
+      if (!s.barRatings) s.barRatings = BARS.map(() => [null, null, null]);
+      return s;
+    }
   } catch(e) {}
   return {
     players: ['Cætty', 'Rove', 'Spiller 3'],
-    scores: BARS.map(() => [null, null, null]),
     visited: BARS.map(() => false),
+    // challengeLog: array of { barIdx, playerIdx, challenge text, pts, done }
+    challengeLog: [],
+    barRatings: BARS.map(() => [null, null, null]),
   };
 }
 
@@ -191,16 +238,30 @@ function showTab(name) {
   if (name === 'settings') renderSettings();
 }
 
+// ---- BARS ----
+function getBarPoints(bi, pi) {
+  return state.challengeLog
+    .filter(e => e.barIdx === bi && e.playerIdx === pi && e.done)
+    .reduce((sum, e) => sum + e.pts, 0);
+}
+
+function getBarLog(bi) {
+  return state.challengeLog.filter(e => e.barIdx === bi);
+}
+
 function renderBars() {
   const visited = state.visited.filter(Boolean).length;
   const el = document.getElementById('tab-bars');
+  // Find current bar (first visited that we're "at") — just show all visited
   let html = `
     <div class="progress-text">${visited} av ${BARS.length} barer besøkt</div>
     <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${(visited/BARS.length)*100}%"></div></div>
     <div style="margin-bottom:16px"></div>
   `;
+
   BARS.forEach((bar, bi) => {
     const v = state.visited[bi];
+    const log = getBarLog(bi);
     html += `<div class="bar-card ${v ? 'visited' : ''}">
       <div class="bar-header">
         <div class="bar-num ${v ? 'done' : ''}">${bi+1}</div>
@@ -210,107 +271,146 @@ function renderBars() {
         </div>
         ${v ? '<div style="font-size:1rem;margin-left:auto">✅</div>' : ''}
       </div>`;
-    if (v) {
-      html += `<div class="score-section"><div class="score-label">Score (1–10)</div><div class="player-scores">`;
+
+    if (v && log.length > 0) {
+      html += `<div class="bar-challenges">
+        <div class="bar-challenges-title">Utfordringer her</div>`;
+      log.forEach(e => {
+        html += `<div class="challenge-log-row">
+          <div class="challenge-log-player">${EMOJIS[e.playerIdx]} ${state.players[e.playerIdx]}</div>
+          <div class="challenge-log-text">${e.emoji} ${e.text}</div>
+          <div class="challenge-log-pts ${e.done ? '' : 'zero'}">${e.done ? '+'+e.pts : '—'}</div>
+        </div>`;
+      });
+      // Totals per player
+      html += `<div class="bar-total-row">`;
       state.players.forEach((p, pi) => {
-        const sc = state.scores[bi][pi];
-        html += `<div class="player-row">
-          <div class="player-name">${EMOJIS[pi]} ${p}</div>
-          <div class="stars" id="stars-${bi}-${pi}">`;
-        for (let s = 1; s <= 10; s++) {
-          html += `<div class="star ${sc !== null && s <= sc ? 'filled' : ''}" onclick="setScore(${bi},${pi},${s})">${s}</div>`;
-        }
-        html += `</div><div class="score-num" id="scnum-${bi}-${pi}">${sc !== null ? sc : '—'}</div></div>`;
+        const pts = getBarPoints(bi, pi);
+        html += `<div class="bar-total-chip">
+          <div class="bar-total-chip-name">${EMOJIS[pi]} ${p}</div>
+          <div class="bar-total-chip-pts">${pts}p</div>
+        </div>`;
       });
       html += `</div></div>`;
+    }
+
+    if (v) {
+      // Personal bar ratings
+      html += `<div class="bar-rating-section">
+        <div class="bar-rating-title">Min vurdering av baren</div>`;
+      state.players.forEach((p, pi) => {
+        const sc = state.barRatings[bi][pi];
+        html += `<div class="player-rating-row">
+          <div class="player-rating-name">${EMOJIS[pi]} ${p}</div>
+          <div class="rating-stars" id="brating-${bi}-${pi}">`;
+        for (let s = 1; s <= 10; s++) {
+          html += `<div class="rating-star ${sc !== null && s <= sc ? 'filled' : ''}" onclick="setBarRating(${bi},${pi},${s})">${s}</div>`;
+        }
+        html += `</div><div class="rating-num" id="bratingnum-${bi}-${pi}">${sc !== null ? sc : '—'}</div></div>`;
+      });
+      html += `</div>`;
+
       html += `<button class="visit-btn visited-btn" onclick="toggleVisit(${bi})">Merk som ikke besøkt</button>`;
     } else {
       html += `<button class="visit-btn" onclick="toggleVisit(${bi})">🍺 Vi er her nå!</button>`;
     }
     html += `</div>`;
   });
+
   el.innerHTML = html;
   document.getElementById('header-sub').textContent = `Tønsberg · ${visited}/${BARS.length} barer`;
 }
 
-function setScore(bi, pi, val) {
-  state.scores[bi][pi] = val;
-  save();
-  const container = document.getElementById(`stars-${bi}-${pi}`);
-  if (container) container.querySelectorAll('.star').forEach((s, i) => s.classList.toggle('filled', i < val));
-  const numEl = document.getElementById(`scnum-${bi}-${pi}`);
-  if (numEl) numEl.textContent = val;
-}
-
 function toggleVisit(bi) {
   state.visited[bi] = !state.visited[bi];
-  if (!state.visited[bi]) state.scores[bi] = [null, null, null];
   save();
   renderBars();
 }
 
-function getAvgScore(pi) {
-  let total = 0, count = 0;
-  state.scores.forEach((barScores, bi) => {
-    if (state.visited[bi] && barScores[pi] !== null) { total += barScores[pi]; count++; }
-  });
-  return count > 0 ? (total / count) : null;
+// ---- SCORE ----
+function getTotalPoints(pi) {
+  return state.challengeLog
+    .filter(e => e.playerIdx === pi && e.done)
+    .reduce((sum, e) => sum + e.pts, 0);
 }
 
 function renderScore() {
   const el = document.getElementById('tab-score');
   const visited = state.visited.filter(Boolean).length;
+
   const rankings = state.players.map((name, pi) => ({
     name, pi,
-    avg: getAvgScore(pi),
-    bars: state.scores.filter((s, bi) => state.visited[bi] && s[pi] !== null).length
-  })).sort((a,b) => (b.avg || -1) - (a.avg || -1));
+    total: getTotalPoints(pi),
+    completed: state.challengeLog.filter(e => e.playerIdx === pi && e.done).length,
+    attempted: state.challengeLog.filter(e => e.playerIdx === pi).length,
+  })).sort((a,b) => b.total - a.total);
 
   let html = '';
-  if (visited === BARS.length && rankings[0].avg !== null) {
-    html += `<div class="winner-banner"><h2>🏆 Vinneren er ${rankings[0].name}!</h2><p>Gjennomsnittsscore: ${rankings[0].avg.toFixed(1)} / 10</p></div>`;
+  if (visited === BARS.length && rankings[0].total > 0) {
+    html += `<div class="winner-banner"><h2>🏆 Vinneren er ${rankings[0].name}!</h2><p>${rankings[0].total} poeng totalt</p></div>`;
   }
-  html += `<div class="scoreboard"><div class="sb-header">Samlet scoreboard</div>`;
+
+  // Only wheel challenge points
+  html += `<div class="scoreboard"><div class="sb-header">Samlet poengsum — hjulutfordringer</div>`;
   rankings.forEach((r, i) => {
     html += `<div class="sb-row">
       <div class="sb-rank">${i===0?'🥇':i===1?'🥈':'🥉'}</div>
       <div class="sb-player-name">${EMOJIS[r.pi]} ${r.name}</div>
-      <div class="sb-bars">${r.bars}/${visited} barer</div>
-      <div class="sb-total">${r.avg !== null ? r.avg.toFixed(1) : '—'}</div>
+      <div class="sb-sub">${r.completed}/${r.attempted} gjennomført</div>
+      <div class="sb-total">${r.total}p</div>
     </div>`;
   });
-  html += `</div><div class="scoreboard"><div class="sb-header">Barene rangert</div>`;
-  const barRankings = BARS.map((bar, bi) => {
-    const scores = state.scores[bi].filter(s => s !== null);
-    const avg = scores.length > 0 ? scores.reduce((a,b)=>a+b,0)/scores.length : null;
-    return { bar, avg };
-  }).filter(x => x.avg !== null).sort((a,b) => (b.avg||0)-(a.avg||0));
-  if (barRankings.length === 0) {
-    html += `<div class="sb-row"><div style="color:var(--muted);font-size:0.7rem">Ingen scores ennå</div></div>`;
+  html += `</div>`;
+
+  // Per bar wheel points breakdown
+  html += `<div class="scoreboard"><div class="sb-header">Hjulpoeng per bar</div>`;
+  const visitedBars = BARS.filter((_, bi) => state.visited[bi]);
+  if (visitedBars.length === 0) {
+    html += `<div class="sb-row"><div style="color:var(--muted);font-size:0.7rem">Ingen barer besøkt ennå</div></div>`;
   } else {
-    barRankings.forEach((r, i) => {
-      html += `<div class="sb-row">
-        <div class="sb-rank">${i+1}</div>
-        <div class="sb-player-name" style="font-style:italic;font-family:'Playfair Display',serif">${r.bar.name}</div>
-        <div class="sb-total">${r.avg.toFixed(1)}</div>
+    BARS.forEach((bar, bi) => {
+      if (!state.visited[bi]) return;
+      html += `<div class="sb-row" style="flex-wrap:wrap;gap:6px">
+        <div style="flex:1;font-family:'Playfair Display',serif;font-style:italic;font-size:0.9rem">${bar.name}</div>
+        <div style="display:flex;gap:10px">
+          ${state.players.map((p,pi) => `<span style="font-size:0.7rem;color:var(--muted)">${EMOJIS[pi]} ${getBarPoints(bi,pi)}p</span>`).join('')}
+        </div>
       </div>`;
     });
   }
   html += `</div>`;
+
   el.innerHTML = html;
 }
 
+// ---- WHEEL ----
 function renderWheel() {
+  const visited = state.visited.filter(Boolean).length;
   const el = document.getElementById('tab-wheel');
+
+  if (visited === 0) {
+    el.innerHTML = `<div style="text-align:center;padding:60px 20px;color:var(--muted)">
+      <div style="font-size:2rem;margin-bottom:12px">🍺</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--cream);font-style:italic">Besøk en bar først!</div>
+      <div style="font-size:0.7rem;margin-top:8px">Merk en bar som besøkt i Barer-fanen</div>
+    </div>`;
+    return;
+  }
+
+  // Current bar = last visited
+  const currentBarIdx = state.visited.lastIndexOf(true);
+
   el.innerHTML = `
     <div class="wheel-wrap">
+      <div style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:2px">Nå på</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--cream);font-style:italic;margin-bottom:12px">${BARS[currentBarIdx].name}</div>
       <div style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Spin the wheel</div>
-      <div style="font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--gold);font-style:italic;margin-bottom:4px">Hvem får utfordringen?</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--gold);font-style:italic;margin-bottom:4px">Hvem får utfordringen?</div>
       <div class="wheel-container">
         <div class="wheel-pointer">🔻</div>
         <canvas id="spin-canvas" width="300" height="300"></canvas>
       </div>
-      <button class="spin-btn" id="spin-btn" onclick="spinWheel()">Spin! 🎡</button>
+      <button class="spin-btn" id="spin-btn" onclick="spinWheel(${currentBarIdx})">Spin! 🎡</button>
       <div class="wheel-note">Hjulet velger spiller OG utfordring</div>
     </div>
   `;
@@ -347,7 +447,7 @@ function drawWheel(angle) {
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('TW', cx, cy);
 }
 
-function spinWheel() {
+function spinWheel(barIdx) {
   if (wheelSpinning) return;
   wheelSpinning = true;
   document.getElementById('spin-btn').disabled = true;
@@ -355,6 +455,8 @@ function spinWheel() {
   const sliceAngle = (2 * Math.PI) / n;
   const winnerIdx = Math.floor(Math.random() * n);
   const challenge = CHALLENGES[Math.floor(Math.random() * CHALLENGES.length)];
+  pendingResult = { playerIdx: winnerIdx, challenge, barIdx };
+
   const currentNorm = ((wheelAngle % (2*Math.PI)) + 2*Math.PI) % (2*Math.PI);
   const targetCenter = ((-(winnerIdx * sliceAngle + sliceAngle/2)) % (2*Math.PI) + 2*Math.PI) % (2*Math.PI);
   const diff = ((targetCenter - currentNorm) + 2*Math.PI) % (2*Math.PI);
@@ -372,21 +474,55 @@ function spinWheel() {
     else {
       wheelAngle = targetAngle; wheelSpinning = false;
       document.getElementById('spin-btn').disabled = false;
-      showResult(winnerIdx, challenge);
+      showChallengeModal(winnerIdx, challenge);
     }
   }
   requestAnimationFrame(animate);
 }
 
-function showResult(playerIdx, challenge) {
+function showChallengeModal(playerIdx, challenge) {
   document.getElementById('modal-emoji').textContent = EMOJIS[playerIdx] || '🎉';
   document.getElementById('modal-name').textContent = state.players[playerIdx];
+  const diffEl = document.getElementById('modal-difficulty');
+  diffEl.textContent = DIFF_LABEL[challenge.diff];
+  diffEl.style.color = DIFF_COLOR[challenge.diff];
+  document.getElementById('modal-pts-badge').textContent = `+${challenge.pts} poeng`;
   document.getElementById('modal-challenge').textContent = challenge.emoji + '  ' + challenge.text;
   document.getElementById('result-modal').classList.add('open');
 }
 
-function closeModal() { document.getElementById('result-modal').classList.remove('open'); }
+function setBarRating(bi, pi, val) {
+  state.barRatings[bi][pi] = val;
+  save();
+  const container = document.getElementById(`brating-${bi}-${pi}`);
+  if (container) container.querySelectorAll('.rating-star').forEach((s, i) => s.classList.toggle('filled', i < val));
+  const numEl = document.getElementById(`bratingnum-${bi}-${pi}`);
+  if (numEl) numEl.textContent = val;
+}
 
+function recordResult(done) {
+  if (!pendingResult) return;
+  const { playerIdx, challenge, barIdx } = pendingResult;
+  state.challengeLog.push({
+    barIdx,
+    playerIdx,
+    emoji: challenge.emoji,
+    text: challenge.text,
+    pts: challenge.pts,
+    done,
+  });
+  save();
+  pendingResult = null;
+  document.getElementById('result-modal').classList.remove('open');
+  // Refresh bars if visible
+  const activeTab = document.querySelector('.tab.active');
+  const tabs = Array.from(document.querySelectorAll('.tab'));
+  const idx = tabs.indexOf(activeTab);
+  if (idx === 0) renderBars();
+  if (idx === 1) renderScore();
+}
+
+// ---- MAP ----
 function renderMap() {
   const el = document.getElementById('tab-map');
   let html = `<p style="font-size:0.7rem;color:var(--muted);margin-bottom:16px">Trykk på en bar for å åpne Google Maps.</p>`;
@@ -420,6 +556,7 @@ function renderMap() {
   el.innerHTML = html;
 }
 
+// ---- SETTINGS ----
 function renderSettings() {
   const el = document.getElementById('tab-settings');
   el.innerHTML = `
@@ -427,7 +564,7 @@ function renderSettings() {
       <div class="settings-title">Deltakernavn</div>
       ${state.players.map((p, i) => `
         <div class="player-input-row">
-          <span class="player-emoji">${EMOJIS[i]}</span>
+          <span style="font-size:1.2rem">${EMOJIS[i]}</span>
           <input type="text" id="p${i}" value="${p}" placeholder="Spiller ${i+1}">
         </div>
       `).join('')}
@@ -449,8 +586,9 @@ function savePlayers() {
 
 function resetAll() {
   if (confirm('Er du sikker? Dette sletter alle scores og besøk.')) {
-    state.scores = BARS.map(() => [null, null, null]);
     state.visited = BARS.map(() => false);
+    state.challengeLog = [];
+    state.barRatings = BARS.map(() => [null, null, null]);
     save();
     showTab('bars');
     alert('Nullstilt! Klar for nytt løp 🍺');
