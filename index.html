@@ -310,11 +310,12 @@ function renderBars() {
       });
       // Average rating
       const ratings = state.barRatings[bi].filter(r => r !== null);
-      if (ratings.length > 0) {
-        const avg = (ratings.reduce((a,b) => a+b, 0) / ratings.length).toFixed(1);
-        html += `<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;align-items:baseline;gap:8px">
+      {
+        const ratings2 = state.barRatings[bi].filter(r => r !== null);
+        const avg2 = ratings2.length > 0 ? (ratings2.reduce((a,b) => a+b, 0) / ratings2.length).toFixed(1) : null;
+        html += `<div id="bar-avg-wrap-${bi}" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:${avg2 ? 'flex' : 'none'};align-items:baseline;gap:8px">
           <span style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted)">Snittkarakter</span>
-          <span style="font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--gold)">${avg}</span>
+          <span id="bar-avg-${bi}" style="font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--gold)">${avg2 || ''}</span>
           <span style="font-size:0.65rem;color:var(--muted)">/ 10</span>
         </div>`;
       }
@@ -509,6 +510,16 @@ function setBarRating(bi, pi, val) {
   if (container) container.querySelectorAll('.rating-star').forEach((s, i) => s.classList.toggle('filled', i < val));
   const numEl = document.getElementById(`bratingnum-${bi}-${pi}`);
   if (numEl) numEl.textContent = val;
+  // Update average display
+  const avgEl = document.getElementById(`bar-avg-${bi}`);
+  if (avgEl) {
+    const ratings = state.barRatings[bi].filter(r => r !== null);
+    if (ratings.length > 0) {
+      const avg = (ratings.reduce((a,b) => a+b, 0) / ratings.length).toFixed(1);
+      avgEl.textContent = avg;
+      avgEl.parentElement.style.display = 'flex';
+    }
+  }
 }
 
 function recordResult(done) {
