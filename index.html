@@ -308,6 +308,17 @@ function renderBars() {
         }
         html += `</div><div class="rating-num" id="bratingnum-${bi}-${pi}">${sc !== null ? sc : '—'}</div></div>`;
       });
+      // Average rating
+      const ratings = state.barRatings[bi].filter(r => r !== null);
+      if (ratings.length > 0) {
+        const avg = (ratings.reduce((a,b) => a+b, 0) / ratings.length).toFixed(1);
+        html += `<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;align-items:baseline;gap:8px">
+          <span style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted)">Snittkarakter</span>
+          <span style="font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--gold)">${avg}</span>
+          <span style="font-size:0.65rem;color:var(--muted)">/ 10</span>
+        </div>`;
+      }
+
       html += `</div>`;
 
       html += `<button class="visit-btn visited-btn" onclick="toggleVisit(${bi})">Merk som ikke besøkt</button>`;
