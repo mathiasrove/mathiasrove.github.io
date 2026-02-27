@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Cætty og Rove's Tom Waits løpet 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0a07;
+    --card: #1a1410;
+    --border: #3d2e1e;
+    --gold: #c9973a;
+    --cream: #f0e6d3;
+    --muted: #7a6a56;
+    --red: #c0392b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--cream); font-family: 'DM Mono', monospace; min-height: 100vh; padding-bottom: 80px; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; opacity: 0.4; }
+  header { padding: 20px 20px 14px; text-align: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px); background: rgba(13,10,7,0.92); }
+  header h1 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--gold); font-style: italic; line-height: 1.3; }
+  header p { color: var(--muted); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; margin-top: 4px; }
+  .tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--bg); }
+  .tab { flex: 1; padding: 12px 4px; text-align: center; cursor: pointer; font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); border-bottom: 2px solid transparent; transition: all 0.2s; }
+  .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .section { display: none; padding: 16px; }
+  .section.active { display: block; }
+  .bar-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 12px; transition: border-color 0.2s; }
+  .bar-card.visited { border-color: var(--gold); opacity: 0.85; }
+  .bar-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+  .bar-num { background: var(--gold); color: var(--bg); font-weight: 500; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; flex-shrink: 0; margin-top: 2px; }
+  .bar-num.done { background: var(--muted); }
+  .bar-info { flex: 1; }
+  .bar-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--cream); font-style: italic; }
+  .bar-addr { font-size: 0.65rem; color: var(--muted); margin-top: 2px; }
+  .score-section { margin-top: 10px; }
+  .score-label { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .player-scores { display: flex; flex-direction: column; gap: 8px; }
+  .player-row { display: flex; align-items: center; gap: 10px; }
+  .player-name { font-size: 0.7rem; color: var(--cream); width: 70px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .stars { display: flex; gap: 3px; }
+  .star { width: 24px; height: 24px; border-radius: 4px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 10px; color: var(--muted); transition: all 0.15s; background: transparent; }
+  .star.filled { background: var(--gold); border-color: var(--gold); color: var(--bg); }
+  .score-num { font-size: 0.85rem; color: var(--gold); min-width: 20px; text-align: right; }
+  .visit-btn { width: 100%; margin-top: 12px; padding: 10px; border-radius: 8px; border: 1px solid var(--gold); background: transparent; color: var(--gold); font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+  .visit-btn:active { background: var(--gold); color: var(--bg); }
+  .visit-btn.visited-btn { border-color: var(--muted); color: var(--muted); }
+  .scoreboard { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 16px; }
+  .sb-header { background: var(--gold); color: var(--bg); padding: 12px 16px; font-family: 'Playfair Display', serif; font-size: 1rem; font-style: italic; }
+  .sb-row { display: flex; align-items: center; padding: 14px 16px; border-bottom: 1px solid var(--border); gap: 12px; }
+  .sb-row:last-child { border-bottom: none; }
+  .sb-rank { font-size: 0.7rem; color: var(--muted); width: 20px; }
+  .sb-player-name { flex: 1; font-size: 0.85rem; }
+  .sb-total { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--gold); }
+  .sb-bars { font-size: 0.6rem; color: var(--muted); text-align: right; min-width: 60px; }
+  .progress-bar-wrap { background: var(--border); border-radius: 4px; height: 4px; margin-bottom: 4px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--gold); border-radius: 4px; transition: width 0.4s ease; }
+  .progress-text { font-size: 0.6rem; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 16px; text-align: center; }
+  .map-btn { display: flex; width: 100%; padding: 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--card); color: var(--cream); font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; text-decoration: none; margin-bottom: 10px; align-items: center; gap: 10px; }
+  .map-btn:active { background: var(--border); }
+  .map-icon { font-size: 1.2rem; }
+  .map-info { text-align: left; }
+  .map-title { color: var(--cream); }
+  .map-sub { color: var(--muted); font-size: 0.6rem; margin-top: 2px; }
+  .settings-section { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+  .settings-title { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .player-input-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .player-emoji { font-size: 1.2rem; }
+  input[type="text"] { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; color: var(--cream); font-family: 'DM Mono', monospace; font-size: 0.8rem; outline: none; transition: border-color 0.2s; }
+  input[type="text"]:focus { border-color: var(--gold); }
+  .save-btn { width: 100%; padding: 12px; border-radius: 8px; border: none; background: var(--gold); color: var(--bg); font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; font-weight: 500; }
+  .reset-btn { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--red); background: transparent; color: var(--red); font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; margin-top: 8px; }
+  .winner-banner { background: linear-gradient(135deg, #c9973a, #8b5e1e); border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 16px; }
+  .winner-banner h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--bg); font-style: italic; }
+  .winner-banner p { color: rgba(0,0,0,0.6); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; }
+  .wheel-wrap { display: flex; flex-direction: column; align-items: center; padding: 8px 0 24px; }
+  .wheel-container { position: relative; width: 300px; height: 300px; margin: 20px auto; }
+  .wheel-pointer { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-size: 2rem; z-index: 10; }
+  #spin-canvas { border-radius: 50%; box-shadow: 0 0 40px rgba(201,151,58,0.3), 0 0 0 4px var(--gold); }
+  .spin-btn { margin-top: 24px; padding: 16px 48px; border-radius: 50px; border: none; background: var(--gold); color: var(--bg); font-family: 'DM Mono', monospace; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; font-weight: 500; box-shadow: 0 4px 20px rgba(201,151,58,0.4); transition: transform 0.1s; }
+  .spin-btn:active { transform: scale(0.96); }
+  .spin-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .wheel-note { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.08em; margin-top: 12px; text-align: center; }
+  .modal-overlay { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.85); backdrop-filter: blur(6px); align-items: center; justify-content: center; padding: 24px; }
+  .modal-overlay.open { display: flex; }
+  .modal-box { background: var(--card); border: 1px solid var(--gold); border-radius: 20px; padding: 32px 24px; text-align: center; max-width: 340px; width: 100%; animation: popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275); }
+  @keyframes popIn { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .modal-close-btn { width: 100%; padding: 14px; border-radius: 10px; border: none; background: var(--gold); color: var(--bg); font-family: 'DM Mono', monospace; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; font-weight: 500; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Cætty og Rove's<br>Tom Waits løpet 2026 🍺</h1>
+  <p id="header-sub">Tønsberg · 0/6 barer</p>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('bars')">Barer</div>
+  <div class="tab" onclick="showTab('score')">Score</div>
+  <div class="tab" onclick="showTab('wheel')">🎡 Hjul</div>
+  <div class="tab" onclick="showTab('map')">Kart</div>
+  <div class="tab" onclick="showTab('settings')">⚙️</div>
+</div>
+
+<div id="tab-bars" class="section active"></div>
+<div id="tab-score" class="section"></div>
+<div id="tab-wheel" class="section"></div>
+<div id="tab-map" class="section"></div>
+<div id="tab-settings" class="section"></div>
+
+<div class="modal-overlay" id="result-modal">
+  <div class="modal-box">
+    <div id="modal-emoji" style="font-size:3rem;margin-bottom:8px"></div>
+    <div id="modal-name" style="font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--gold);font-style:italic;margin-bottom:4px"></div>
+    <div style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:20px">skal utføre</div>
+    <div id="modal-challenge" style="font-size:1rem;color:var(--cream);line-height:1.6;margin-bottom:24px;padding:16px;background:var(--bg);border-radius:10px;border:1px solid var(--border)"></div>
+    <button class="modal-close-btn" onclick="closeModal()">OK, vi er klare! 🍺</button>
+  </div>
+</div>
+
+<script>
+const BARS = [
+  { name: "Mytteriet", addr: "Nedre Langgate 26A", lat: 59.2665258, lng: 10.4062956 },
+  { name: "Big Ben", addr: "Torvet 1", lat: 59.2676903, lng: 10.4085126 },
+  { name: "Black and White", addr: "Kammegaten 11", lat: 59.2687735, lng: 10.4084762 },
+  { name: "Lille Havariet", addr: "Nedre Langgate 30E", lat: 59.2663088, lng: 10.4052936 },
+  { name: "Foyn", addr: "Nedre Langgate 18C", lat: 59.265325, lng: 10.4069444 },
+  { name: "Paparazzi", addr: "Nedre Langgate 20", lat: 59.26584, lng: 10.4063605 },
+];
+const EMOJIS = ['🍺', '🥂', '🍸'];
+const STORAGE_KEY = 'caetty-rove-tomwaits-2026';
+
+const CHALLENGES = [
+  { emoji: '🍺', text: 'Ta en slurk for hvert år du har vært venn med de andre to.' },
+  { emoji: '🥂', text: 'Skål med alle i baren innen 2 minutter — ellers drikker du ut glasset.' },
+  { emoji: '🍹', text: 'Bestill en drink du aldri har smakt før.' },
+  { emoji: '🍺', text: 'Drikk med feil hånd resten av baren. Tar du feil hånd, drikker du en slurk.' },
+  { emoji: '🥃', text: 'Ta to slurker og si en skål — på et annet språk enn norsk.' },
+  { emoji: '🍻', text: 'Bytt drink med personen til høyre for deg i én runde.' },
+  { emoji: '🍺', text: 'Ta en slurk hver gang noen sier "skål" resten av kvelden på denne baren.' },
+  { emoji: '🥂', text: 'Drikk sittende på huk til du er ferdig med slurken.' },
+  { emoji: '🎤', text: 'Syng refrenget til en sang — de andre velger sangen.' },
+  { emoji: '💬', text: 'Gå bort til en fremmed og spør om deres beste drikketips.' },
+  { emoji: '🕺', text: 'Dans alene i 15 sekunder, uten musikk.' },
+  { emoji: '📸', text: 'Ta en selfie med en fremmed og vis den frem til gruppen.' },
+  { emoji: '🤝', text: 'Presenter deg til barpersonalet med et falskt, overdrevet yrke.' },
+  { emoji: '🗣️', text: 'Fortell en vits for gruppa. Er den dårlig, drikker du en ekstra slurk.' },
+  { emoji: '🎭', text: 'Etterlign en kjent person i 30 sekunder — de andre gjetter hvem.' },
+  { emoji: '🤫', text: 'Si ingenting i 3 minutter. Bryter du tausheten, drikker du.' },
+  { emoji: '🎲', text: 'Ring en som ikke er med i kveld og overbevis dem om å bli med. Klarer du det? Du slipper neste utfordring.' },
+  { emoji: '👑', text: 'Du er "Kongen/Dronningen" resten av baren — de andre må gjøre det du sier (innen rimelighetens grenser).' },
+  { emoji: '🌶️', text: 'Fortell den mest pinlige tingen du har gjort på en bar — eller drikk dobbelt.' },
+  { emoji: '⏱️', text: 'Hold pusten så lenge du kan. Antall sekunder = antall slurker DE ANDRE drikker.' },
+  { emoji: '🃏', text: 'Sannhet eller utfordring? Velg en av de andre til å stille deg spørsmålet.' },
+  { emoji: '🔁', text: 'Bytt plass med en av de andre og bli sittende slik til neste bar.' },
+  { emoji: '🎯', text: 'Gruppen klipper-saks-stein. Taperen drikker en ekstra slurk.' },
+  { emoji: '🕵️', text: 'Finn noe dere alle tre har til felles med noen i baren — og fortell dem det.' },
+];
+
+let state = load();
+let wheelSpinning = false;
+let wheelAngle = 0;
+
+function load() {
+  try {
+    const s = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+    if (s) return s;
+  } catch(e) {}
+  return {
+    players: ['Cætty', 'Rove', 'Spiller 3'],
+    scores: BARS.map(() => [null, null, null]),
+    visited: BARS.map(() => false),
+  };
+}
+
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+function showTab(name) {
+  const names = ['bars','score','wheel','map','settings'];
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', names[i] === name));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  if (name === 'bars') renderBars();
+  if (name === 'score') renderScore();
+  if (name === 'wheel') renderWheel();
+  if (name === 'map') renderMap();
+  if (name === 'settings') renderSettings();
+}
+
+function renderBars() {
+  const visited = state.visited.filter(Boolean).length;
+  const el = document.getElementById('tab-bars');
+  let html = `
+    <div class="progress-text">${visited} av ${BARS.length} barer besøkt</div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${(visited/BARS.length)*100}%"></div></div>
+    <div style="margin-bottom:16px"></div>
+  `;
+  BARS.forEach((bar, bi) => {
+    const v = state.visited[bi];
+    html += `<div class="bar-card ${v ? 'visited' : ''}">
+      <div class="bar-header">
+        <div class="bar-num ${v ? 'done' : ''}">${bi+1}</div>
+        <div class="bar-info">
+          <div class="bar-name">${bar.name}</div>
+          <div class="bar-addr">${bar.addr}</div>
+        </div>
+        ${v ? '<div style="font-size:1rem;margin-left:auto">✅</div>' : ''}
+      </div>`;
+    if (v) {
+      html += `<div class="score-section"><div class="score-label">Score (1–10)</div><div class="player-scores">`;
+      state.players.forEach((p, pi) => {
+        const sc = state.scores[bi][pi];
+        html += `<div class="player-row">
+          <div class="player-name">${EMOJIS[pi]} ${p}</div>
+          <div class="stars" id="stars-${bi}-${pi}">`;
+        for (let s = 1; s <= 10; s++) {
+          html += `<div class="star ${sc !== null && s <= sc ? 'filled' : ''}" onclick="setScore(${bi},${pi},${s})">${s}</div>`;
+        }
+        html += `</div><div class="score-num" id="scnum-${bi}-${pi}">${sc !== null ? sc : '—'}</div></div>`;
+      });
+      html += `</div></div>`;
+      html += `<button class="visit-btn visited-btn" onclick="toggleVisit(${bi})">Merk som ikke besøkt</button>`;
+    } else {
+      html += `<button class="visit-btn" onclick="toggleVisit(${bi})">🍺 Vi er her nå!</button>`;
+    }
+    html += `</div>`;
+  });
+  el.innerHTML = html;
+  document.getElementById('header-sub').textContent = `Tønsberg · ${visited}/${BARS.length} barer`;
+}
+
+function setScore(bi, pi, val) {
+  state.scores[bi][pi] = val;
+  save();
+  const container = document.getElementById(`stars-${bi}-${pi}`);
+  if (container) container.querySelectorAll('.star').forEach((s, i) => s.classList.toggle('filled', i < val));
+  const numEl = document.getElementById(`scnum-${bi}-${pi}`);
+  if (numEl) numEl.textContent = val;
+}
+
+function toggleVisit(bi) {
+  state.visited[bi] = !state.visited[bi];
+  if (!state.visited[bi]) state.scores[bi] = [null, null, null];
+  save();
+  renderBars();
+}
+
+function getAvgScore(pi) {
+  let total = 0, count = 0;
+  state.scores.forEach((barScores, bi) => {
+    if (state.visited[bi] && barScores[pi] !== null) { total += barScores[pi]; count++; }
+  });
+  return count > 0 ? (total / count) : null;
+}
+
+function renderScore() {
+  const el = document.getElementById('tab-score');
+  const visited = state.visited.filter(Boolean).length;
+  const rankings = state.players.map((name, pi) => ({
+    name, pi,
+    avg: getAvgScore(pi),
+    bars: state.scores.filter((s, bi) => state.visited[bi] && s[pi] !== null).length
+  })).sort((a,b) => (b.avg || -1) - (a.avg || -1));
+
+  let html = '';
+  if (visited === BARS.length && rankings[0].avg !== null) {
+    html += `<div class="winner-banner"><h2>🏆 Vinneren er ${rankings[0].name}!</h2><p>Gjennomsnittsscore: ${rankings[0].avg.toFixed(1)} / 10</p></div>`;
+  }
+  html += `<div class="scoreboard"><div class="sb-header">Samlet scoreboard</div>`;
+  rankings.forEach((r, i) => {
+    html += `<div class="sb-row">
+      <div class="sb-rank">${i===0?'🥇':i===1?'🥈':'🥉'}</div>
+      <div class="sb-player-name">${EMOJIS[r.pi]} ${r.name}</div>
+      <div class="sb-bars">${r.bars}/${visited} barer</div>
+      <div class="sb-total">${r.avg !== null ? r.avg.toFixed(1) : '—'}</div>
+    </div>`;
+  });
+  html += `</div><div class="scoreboard"><div class="sb-header">Barene rangert</div>`;
+  const barRankings = BARS.map((bar, bi) => {
+    const scores = state.scores[bi].filter(s => s !== null);
+    const avg = scores.length > 0 ? scores.reduce((a,b)=>a+b,0)/scores.length : null;
+    return { bar, avg };
+  }).filter(x => x.avg !== null).sort((a,b) => (b.avg||0)-(a.avg||0));
+  if (barRankings.length === 0) {
+    html += `<div class="sb-row"><div style="color:var(--muted);font-size:0.7rem">Ingen scores ennå</div></div>`;
+  } else {
+    barRankings.forEach((r, i) => {
+      html += `<div class="sb-row">
+        <div class="sb-rank">${i+1}</div>
+        <div class="sb-player-name" style="font-style:italic;font-family:'Playfair Display',serif">${r.bar.name}</div>
+        <div class="sb-total">${r.avg.toFixed(1)}</div>
+      </div>`;
+    });
+  }
+  html += `</div>`;
+  el.innerHTML = html;
+}
+
+function renderWheel() {
+  const el = document.getElementById('tab-wheel');
+  el.innerHTML = `
+    <div class="wheel-wrap">
+      <div style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Spin the wheel</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--gold);font-style:italic;margin-bottom:4px">Hvem får utfordringen?</div>
+      <div class="wheel-container">
+        <div class="wheel-pointer">🔻</div>
+        <canvas id="spin-canvas" width="300" height="300"></canvas>
+      </div>
+      <button class="spin-btn" id="spin-btn" onclick="spinWheel()">Spin! 🎡</button>
+      <div class="wheel-note">Hjulet velger spiller OG utfordring</div>
+    </div>
+  `;
+  drawWheel(wheelAngle);
+}
+
+function drawWheel(angle) {
+  const canvas = document.getElementById('spin-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const cx = 150, cy = 150, r = 145;
+  const players = state.players;
+  const n = players.length;
+  const sliceAngle = (2 * Math.PI) / n;
+  const palettes = [['#c9973a','#0d0a07'],['#1a1410','#c9973a'],['#5a3e1b','#f0e6d3']];
+  ctx.clearRect(0, 0, 300, 300);
+  players.forEach((name, i) => {
+    const start = angle + i * sliceAngle - Math.PI / 2;
+    const end = start + sliceAngle;
+    const [fill, textColor] = palettes[i % palettes.length];
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, r, start, end); ctx.closePath();
+    ctx.fillStyle = fill; ctx.fill();
+    ctx.strokeStyle = '#0d0a07'; ctx.lineWidth = 3; ctx.stroke();
+    ctx.save(); ctx.translate(cx, cy); ctx.rotate(start + sliceAngle / 2);
+    ctx.textAlign = 'right'; ctx.fillStyle = textColor;
+    ctx.font = "bold 15px 'DM Mono', monospace";
+    ctx.fillText(EMOJIS[i] + ' ' + name, r - 16, 6);
+    ctx.restore();
+  });
+  ctx.beginPath(); ctx.arc(cx, cy, 22, 0, 2 * Math.PI);
+  ctx.fillStyle = '#c9973a'; ctx.fill();
+  ctx.strokeStyle = '#0d0a07'; ctx.lineWidth = 3; ctx.stroke();
+  ctx.fillStyle = '#0d0a07'; ctx.font = "bold 11px 'DM Mono', monospace";
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('TW', cx, cy);
+}
+
+function spinWheel() {
+  if (wheelSpinning) return;
+  wheelSpinning = true;
+  document.getElementById('spin-btn').disabled = true;
+  const n = state.players.length;
+  const sliceAngle = (2 * Math.PI) / n;
+  const winnerIdx = Math.floor(Math.random() * n);
+  const challenge = CHALLENGES[Math.floor(Math.random() * CHALLENGES.length)];
+  const currentNorm = ((wheelAngle % (2*Math.PI)) + 2*Math.PI) % (2*Math.PI);
+  const targetCenter = ((-(winnerIdx * sliceAngle + sliceAngle/2)) % (2*Math.PI) + 2*Math.PI) % (2*Math.PI);
+  const diff = ((targetCenter - currentNorm) + 2*Math.PI) % (2*Math.PI);
+  const extraSpins = (5 + Math.floor(Math.random()*4)) * 2 * Math.PI;
+  const targetAngle = wheelAngle + extraSpins + diff;
+  const duration = 4200;
+  const start = performance.now();
+  const startAngle = wheelAngle;
+  function ease(t) { return t < 0.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; }
+  function animate(now) {
+    const t = Math.min((now-start)/duration, 1);
+    wheelAngle = startAngle + (targetAngle-startAngle)*ease(t);
+    drawWheel(wheelAngle);
+    if (t < 1) { requestAnimationFrame(animate); }
+    else {
+      wheelAngle = targetAngle; wheelSpinning = false;
+      document.getElementById('spin-btn').disabled = false;
+      showResult(winnerIdx, challenge);
+    }
+  }
+  requestAnimationFrame(animate);
+}
+
+function showResult(playerIdx, challenge) {
+  document.getElementById('modal-emoji').textContent = EMOJIS[playerIdx] || '🎉';
+  document.getElementById('modal-name').textContent = state.players[playerIdx];
+  document.getElementById('modal-challenge').textContent = challenge.emoji + '  ' + challenge.text;
+  document.getElementById('result-modal').classList.add('open');
+}
+
+function closeModal() { document.getElementById('result-modal').classList.remove('open'); }
+
+function renderMap() {
+  const el = document.getElementById('tab-map');
+  let html = `<p style="font-size:0.7rem;color:var(--muted);margin-bottom:16px">Trykk på en bar for å åpne Google Maps.</p>`;
+  BARS.forEach((bar, bi) => {
+    const v = state.visited[bi];
+    const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(bar.name+' '+bar.addr+' Tonsberg')}`;
+    html += `<a class="map-btn" href="${mapsUrl}" target="_blank" style="${v?'opacity:0.5':''}">
+      <span class="map-icon">${v?'✅':'📍'}</span>
+      <div class="map-info">
+        <div class="map-title" style="font-family:'Playfair Display',serif;font-style:italic">${bar.name}</div>
+        <div class="map-sub">${bar.addr}</div>
+      </div>
+      <span style="color:var(--muted);font-size:0.8rem;margin-left:auto">→</span>
+    </a>`;
+  });
+  const nextUnvisited = BARS.findIndex((_, bi) => !state.visited[bi]);
+  if (nextUnvisited !== -1) {
+    const bar = BARS[nextUnvisited];
+    const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${bar.lat},${bar.lng}&travelmode=walking`;
+    html += `<div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+      <div style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Neste stopp</div>
+      <a class="map-btn" href="${navUrl}" target="_blank" style="background:var(--gold);color:var(--bg);border-color:var(--gold)">
+        <span class="map-icon">🧭</span>
+        <div class="map-info">
+          <div class="map-title" style="color:var(--bg);font-family:'Playfair Display',serif;font-style:italic">Naviger til ${bar.name}</div>
+          <div class="map-sub" style="color:rgba(0,0,0,0.5)">Gå dit</div>
+        </div>
+      </a>
+    </div>`;
+  }
+  el.innerHTML = html;
+}
+
+function renderSettings() {
+  const el = document.getElementById('tab-settings');
+  el.innerHTML = `
+    <div class="settings-section">
+      <div class="settings-title">Deltakernavn</div>
+      ${state.players.map((p, i) => `
+        <div class="player-input-row">
+          <span class="player-emoji">${EMOJIS[i]}</span>
+          <input type="text" id="p${i}" value="${p}" placeholder="Spiller ${i+1}">
+        </div>
+      `).join('')}
+      <button class="save-btn" onclick="savePlayers()">Lagre navn</button>
+    </div>
+    <div class="settings-section">
+      <div class="settings-title">Reset</div>
+      <p style="font-size:0.7rem;color:var(--muted);margin-bottom:12px">Nullstill alle scores og besøk for nytt løp.</p>
+      <button class="reset-btn" onclick="resetAll()">🗑️ Nullstill alt</button>
+    </div>
+  `;
+}
+
+function savePlayers() {
+  state.players = [0,1,2].map(i => document.getElementById('p'+i).value.trim() || `Spiller ${i+1}`);
+  save();
+  alert('Navn lagret! 🎉');
+}
+
+function resetAll() {
+  if (confirm('Er du sikker? Dette sletter alle scores og besøk.')) {
+    state.scores = BARS.map(() => [null, null, null]);
+    state.visited = BARS.map(() => false);
+    save();
+    showTab('bars');
+    alert('Nullstilt! Klar for nytt løp 🍺');
+  }
+}
+
+renderBars();
+</script>
+</body>
+</html>
